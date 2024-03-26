@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  auth_management:
+    build:
+      context: auth_management
+      dockerfile: AuthDockerfile
+    container_name: "auth_management"
+    hostname: "auth_management"
+    command: uvicorn auth_management.main:auth_app --host 0.0.0.0 --port 7003  --reload
+    volumes:
+      - ./auth_management:/auth_management
+      - ./auth_management:/auth_management/auth_management
+    ports:
+      - "7003:7003"
+    env_file: auth_management/.env
+    networks:
+      - auth_network
+    restart: always
+    depends_on:
+      - auth_db
+
+  auth_db:
+    container_name: "auth_db"
+    image: postgres:15.3
+#    expose:
+#      - 5432
+    ports:
+      - "5432:5432"
+    env_file:
+      - auth_management/.env.db
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+        - auth_network
+
+volumes:
+  auth_db_data:
+  auth_data:
+
+networks:
+  auth_network:
+    driver: bridge

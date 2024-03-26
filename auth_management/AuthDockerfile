@@ -1,0 +1,13 @@
+FROM python:3.12-alpine
+ENV PYTHONUNBUFFERED 1
+WORKDIR ./
+RUN mkdir auth_management
+COPY . auth_management/
+#COPY ./requirements.txt .
+#COPY requirements.txt /app
+RUN pip install --upgrade pip
+RUN #apk update \
+RUN apk install netcat gcc postgresql
+# RUN #apk install python3-dotenv
+RUN pip install --no-cache-dir -r auth_management/requirements.txt
+RUN #pip install -r requirements.txt
