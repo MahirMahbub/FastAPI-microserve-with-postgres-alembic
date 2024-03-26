@@ -4,8 +4,11 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel, create_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
-
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = "sqlite+aiosqlite:///./test.db"
+# if os.getenv("ENVIRONMENT") == "docker":
+#     DATABASE_URL = os.environ.get("DATABASE_URL")
+# else:
+#     DATABASE_URL = os.environ.get("DEVELOPMENT_DATABASE_URL")
 
 engine = AsyncEngine(create_engine(DATABASE_URL, echo=True, future=True))
 
